@@ -24,6 +24,9 @@ var argv = optimist
     .describe('wwwroot', 'location where the webserver will serve additional static files')
     .describe('ui', 'mocha ui (bdd, tdd, qunit, exports')
     .default('ui')
+    .boolean('debug')
+    .describe('debug', 'adds source maps to the bundle for easier debugging')
+    .default('debug', false)
     .argv;
 
 if (argv.help) {
@@ -39,7 +42,7 @@ if (argv.server && isNaN(parseInt(argv.server))) {
 
 var bundle = browserify();
 
-// TODO (shtylman) debug and watch mode for browserify?
+// TODO (shtylman) watch mode for browserify?
 
 // user can specify files or directories
 // directories are checked for .js files
@@ -107,7 +110,7 @@ app.get('/', function(req, res) {
 });
 app.get('/build.js', function(req, res) {
     res.contentType('application/javascript');
-    bundle.bundle({ insertGlobals: true }, function(err, src) {
+    bundle.bundle({ insertGlobals: true, debug: argv.debug }, function(err, src) {
         if (err) { 
           console.error(err);
           return res.send(500);
