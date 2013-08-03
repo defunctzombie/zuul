@@ -7,7 +7,7 @@ Zuul is a test runner/harness to make running your mocha tests in a browser easi
 If you want to see the output of your mocha tests in a pretty browser window use zuul with the ```server``` option.
 
 ```shell
-$ zuul --server 9000 /path/to/your/tests
+$ zuul --server 9000 --debug /path/to/your/tests
 ```
 
 Zuul will start a server on localhost:9000 which you can visit to get awesome html output (courtesy of mocha).
