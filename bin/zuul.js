@@ -1,9 +1,12 @@
-#!/usr/bin/env node
 // zuul test/*.js
 
 // builtin
 var path = require('path');
-var fs = require('fs');
+
+// vendor
+var optimist = require('optimist');
+
+// mine
 var zuulApi = require('../lib/zuul');
 
 var argv = optimist
