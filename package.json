@@ -21,7 +21,7 @@
     "zuul": "./bin/zuul"
   },
   "scripts": {
-    "test": "node ./bin/zuul.js"
+    "test": "mocha ./test/"
   },
   "keywords": [
     "zuul",
