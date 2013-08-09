@@ -18,7 +18,7 @@
     "url": "git://github.com/shtylman/zuul.git"
   },
   "bin": {
-    "zuul": "./bin/zuul.js"
+    "zuul": "./bin/zuul"
   },
   "scripts": {
     "test": "node ./bin/zuul.js"

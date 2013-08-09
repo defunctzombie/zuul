@@ -1,4 +1,4 @@
-// zuul test/*.js
+#!/usr/bin/env node
 
 // builtin
 var path = require('path');
