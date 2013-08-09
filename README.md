@@ -58,7 +58,7 @@ test fixture and/or want to add extra endpoints to the zuul test server, the `--
 Lets say we have a `./zuul-config.js` file in our current directory, running `zuul --config ./zuul-config.js` picks up
 eventual overrides specified in it, all of which are optional:
 
-- **browserify**: `{Function}` that needs to return a browserify instance that can be initialized according to our needs
+- **initBrowserify**: `{Function}` invoked with `browserify` that needs to return a browserify **instance** that can be initialized according to our needs
 - **bundleOpts**: `{Object}` options passed to `browserify().bundle(options)`
 - **fixture**: `{Function}` returning a `{String}` that allows overriding the [default html
   fixture](https://github.com/shtylman/zuul/blob/master/fixtures/index.html), but needs to keep the necessary setup
@@ -71,10 +71,9 @@ Here is an example `zuul-config.js`:
 ```js
 var fs = require('fs');
 var path = require('path');
-var browserify = require('browserify');
 
 // overriding the browserify instance creation in order to add a transform
-exports.browserify = function () {
+exports.initBrowserfiy = function (browserify) {
   return browserify().transform('brfs');
 
 };
