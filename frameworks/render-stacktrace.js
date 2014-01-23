@@ -1,6 +1,8 @@
 'use strict';
 
 var hljs = require('./hl.js');
+var shims = require('./shims');
+
 
 function getCode(sources, frame) {
     var codeArr = sources[frame.filename];
@@ -23,9 +25,14 @@ function getCode(sources, frame) {
     }
 
     try {
+        // hljs uses ES5 features
+        shims.define();
+
         return highlight_fn(code).value;
     } catch (e) {
         return code;
+    } finally {
+        shims.undefine();
     }
 }
 
@@ -51,7 +58,6 @@ function onTraceClick (ev) {
     var input = tgt.parentElement.getElementsByClassName('trace-copy')[0];
     if (!input) return;
 
-    console.log(tgt.offsetWidth);
     input.style.display = 'inline';
     input.style.width = tgt.offsetWidth + 'px';
     input.focus();
