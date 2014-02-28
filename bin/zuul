@@ -18,6 +18,7 @@ program
 .usage('[options] <files | dir>')
 .option('--ui <testing ui>', 'ui for tests (mocha-bdd, mocha-tdd, qunit, tape)')
 .option('--local [port]', 'port for manual testing in a local browser')
+.option('--cloud <testing provider>', 'run tests using a cloud provider (saucelabs, browserstack)')
 .option('--tunnel', 'establish a tunnel for outside acceess. only used when --local is specified')
 .option('--phantom', 'run tests in phantomjs. PhantomJS must be installed separately.')
 .parse(process.argv);
@@ -28,7 +29,8 @@ var config = {
     ui: program.ui,
     tunnel: program.tunnel,
     phantom: program.phantom,
-    prj_dir: process.cwd()
+    prj_dir: process.cwd(),
+    cloud: process.cloud
 };
 
 if (config.files.length === 0) {
@@ -54,6 +56,7 @@ var sauce_key = process.env.SAUCE_ACCESS_KEY;
 
 config.username = sauce_username || config.sauce_username;
 config.key = sauce_key || config.sauce_key;
+config.cloud = config.cloud || 'saucelabs';
 
 if (!config.ui) {
     console.error('Error: `ui` must be configured in .zuul.yml or specified with the --ui flag');
@@ -77,6 +80,24 @@ else if (config.phantom) {
     return zuul.run(function(passed) {
         process.exit(passed ? 0 : 1);
     });
+}
+else if (config.cloud === 'browserstack') {
+    config.browserstack.username = config.browserstack.username ||
+        process.env.BROWSERSTACK_USERNAME;
+    config.browserstack.key = config.browserstack.key ||
+        process.env.BROWSERSTACK_KEY;
+    config.browserstack.concurrency = config.browserstack.concurrency ||
+        process.env.BROWSERSTACK_CONCURRENCY || 1;
+
+    if (!config.browserstack.username || !config.browserstack.key) {
+        console.error('Error:');
+        console.error('Zuul tried to run tests in browserstack, however no saucelabs credentials were provided.');
+        console.error('See the zuul wiki (https://github.com/defunctzombie/zuul/wiki/Cloud-testing) for info on how to setup cloud testing.');
+        process.exit(1);
+        return;
+    }
+
+    return zuul.cloudRun();
 }
 
 if (!config.username || !config.key) {
@@ -124,68 +145,14 @@ scout_browser(function(err, all_browsers) {
         zuul.browser(info);
     });
 
-    var passed_count = 0;
-    var failed_count = 0;
+    zuul.registerCloudReporter();
 
-    zuul.on('browser', function(browser) {
-        var name = browser.toString();
-
-        browser.once('init', function() {
-            console.log('- queuing: %s'.grey, name);
-        });
-
-        browser.once('start', function(reporter) {
-            console.log('- starting: %s'.white, name);
-
-            var wait_interval = setInterval(function() {
-                console.log('- waiting: %s'.yellow, name);
-            }, 1000 * 30);
-
-            var current_test = undefined;
-            reporter.on('test', function(test) {
-                current_test = test;
-            });
-
-            reporter.on('console', function(msg) {
-                console.log('%s console'.white, name);
-                console.log.apply(console, msg.args);
-            });
-
-            reporter.on('assertion', function(assertion) {
-                console.log();
-                console.log('%s %s'.red, name, current_test.name);
-                console.log('Error: %s'.red, assertion.message);
-                assertion.frames.forEach(function(frame) {
-                    console.log('    %s %s:%d'.grey, frame.func, frame.filename, frame.line);
-                });
-                console.log();
-            });
-
-            reporter.once('done', function() {
-                clearInterval(wait_interval);
-            });
-        });
-
-        browser.once('done', function(results) {
-            passed_count += results.passed;
-            failed_count += results.failed;
-
-            if (results.failed || results.passed === 0) {
-                console.log('- failed: %s (%d failed, %d passed)'.red, name,
-                    results.failed, results.passed);
-                return;
-            }
-            console.log('- passed: %s'.green, name);
-        });
-
-    });
-
-    zuul.run(function(passed) {
+    zuul.run(function(passed, results) {
         if (passed) {
             console.log('all browsers passed'.green);
         }
         else {
-            console.log('%d browser(s) failed'.red, failed_count);
+            console.log('%d browser(s) failed'.red, results.failed_count);
         }
         process.exit(passed ? 0 : 1);
     });
