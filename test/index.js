@@ -170,13 +170,14 @@ test('mocha-qunit - sauce', function(done) {
     });
 });
 
-test('mocha-qunit - browserstack', function(done) {
+test.only('mocha-qunit - browserstack', function(done) {
     var config = {
         ui: 'mocha-qunit',
         prj_dir: __dirname + '/mocha-qunit',
         files: [__dirname + '/mocha-qunit/test.js'],
         browserstack: auth.browserstack,
-        cloud: 'browserstack'
+        cloud_provider: 'browserstack',
+        concurrency: auth.concurrency || 1
     };
 
     var zuul = Zuul(config);
@@ -213,7 +214,7 @@ test('mocha-qunit - browserstack', function(done) {
             });
         });
 
-        zuul.cloudRun(function(passed) {
+        zuul.run(function(passed) {
             assert.ok(!passed);
             done();
         });
