@@ -13,6 +13,8 @@ var osenv = require('osenv');
 var Zuul = require('../lib/zuul');
 var scout_browser = require('../lib/scout_browser');
 var flatten_browser = require('../lib/flatten_browser');
+var SauceBrowser = require('./SauceBrowser');
+var BrowserStackBrowser = require('./BrowserStackBrowser');
 
 program
 .usage('[options] <files | dir>')
@@ -164,7 +166,7 @@ scout_browser(function(err, all_browsers) {
     }
 
     to_test.forEach(function(info) {
-        zuul.browser(info);
+        zuul.browser(SauceBrowser, info);
     });
 
     zuul.registerCloudReporter();

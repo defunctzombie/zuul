@@ -4,6 +4,7 @@ var after = require('after');
 var auth = require('./auth');
 var Zuul = require('../');
 var scout_browser = require('../lib/scout_browser');
+var SauceBrowser = require('../lib/SauceBrowser');
 var BrowserStackBrowser = require('../lib/BrowserStackBrowser');
 
 test('mocha-bdd - phantom', function(done) {
@@ -125,7 +126,7 @@ test('mocha-qunit - sauce', function(done) {
             var list = browsers[key];
             if (list.length === 1) {
                 total++;
-                return zuul.browser(list);
+                return zuul.browser(SauceBrowser, list);
             }
 
             list.sort(function(a, b) {
@@ -134,8 +135,8 @@ test('mocha-qunit - sauce', function(done) {
 
             // test latest and oldest
             total += 2;
-            zuul.browser(list.shift());
-            zuul.browser(list.pop());
+            zuul.browser(SauceBrowser, list.shift());
+            zuul.browser(SauceBrowser, list.pop());
         });
 
         // N times per browser and once for all done
@@ -170,7 +171,7 @@ test('mocha-qunit - sauce', function(done) {
     });
 });
 
-test.only('mocha-qunit - browserstack', function(done) {
+test('mocha-qunit - browserstack', function(done) {
     var config = {
         ui: 'mocha-qunit',
         prj_dir: __dirname + '/mocha-qunit',
@@ -186,7 +187,7 @@ test.only('mocha-qunit - browserstack', function(done) {
         assert.ifError(err);
 
         abbrevBrowsers.forEach(function(browser) {
-            zuul.addBSBrowser(browser);
+            zuul.browser(BrowserStackBrowser, browser);
         });
 
         // N times per browser and once for all done
