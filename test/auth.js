@@ -12,5 +12,15 @@ if (fs.existsSync(home_config)) {
 
 module.exports = {
     username: process.env.SAUCE_USERNAME || zuulrc.sauce_username,
-    key: process.env.SAUCE_ACCESS_KEY || zuulrc.sauce_key
+    key: process.env.SAUCE_ACCESS_KEY || zuulrc.sauce_key,
+
+    concurrency: process.env.CONCURRENCY ||
+          zuulrc.concurrency,
+
+    browserstack: {
+      username: process.env.BROWSERSTACK_USERNAME ||
+          zuulrc.browserstack.username,
+      key: process.env.BROWSERSTACK_KEY ||
+          zuulrc.browserstack.key
+    }
 };
