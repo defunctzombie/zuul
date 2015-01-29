@@ -2,7 +2,6 @@ name: quickstart
 ui: mocha-qunit
 browsers:
   - name: firefox
-    platform: linux
     version: 30..latest
   - name: chrome
     version: 30..beta

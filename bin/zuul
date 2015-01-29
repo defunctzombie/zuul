@@ -22,6 +22,7 @@ program
 .option('--local [port]', 'port for manual testing in a local browser')
 .option('--tunnel', 'establish a tunnel for outside access. only used when --local is specified')
 .option('--phantom', 'run tests in phantomjs. PhantomJS must be installed separately.')
+.option('--browserstack', 'run tests in BrowserStack instead of Sauce Labs.')
 .option('--tunnel-host <host url>', 'specify a localtunnel server to use for forwarding')
 .option('--sauce-connect [tunnel-identifier]', 'use saucelabs with sauce connect instead of localtunnel. Optionally specify the tunnel-identifier')
 .option('--server <the server script>', 'specify a server script to be run')
@@ -39,6 +40,7 @@ var config = {
     ui: program.ui,
     tunnel: program.tunnel,
     phantom: program.phantom,
+    selenium_runner: program.browserstack ? 'BrowserStack' : 'SauceLabs',
     prj_dir: process.cwd(),
     tunnel_host: program.tunnelHost,
     sauce_connect: program.sauceConnect,
@@ -67,10 +69,23 @@ if(!process.stdout.isTTY){
     });
 }
 
+// optional additional local config or from $HOME/.zuulrc
+var local_config = find_nearest_file('.zuulrc') || path.join(osenv.home(), '.zuulrc');
+if (fs.existsSync(local_config)) {
+    var zuulrc = yaml.parse(fs.readFileSync(local_config, 'utf-8'));
+    config = xtend(zuulrc, config);
+    config.tunnel_host = config.tunnel_host || zuulrc.tunnel_host;
+}
+
+config.username = {'SauceLabs': process.env.SAUCE_USERNAME || config.sauce_username,
+                   'BrowserStack': process.env.BROWSERSTACK_USERNAME || config.browserstack_username}[config.selenium_runner]
+config.key = {'SauceLabs': process.env.SAUCE_ACCESS_KEY || config.sauce_key,
+              'BrowserStack': process.env.BROWSERSTACK_ACCESS_KEY || config.browserstack_key}[config.selenium_runner]
+
 if (program.listAvailableBrowsers) {
-    scout_browser(function(err, all_browsers) {
+    scout_browser(config, function(err, all_browsers) {
         if (err) {
-            console.error('Unable to get available browsers for saucelabs'.red);
+            console.error('Unable to get available browsers for '+config.selenium_runner+''.red);
             console.error(err.stack);
             return process.exit(1);
         }
@@ -105,20 +120,6 @@ if (fs.existsSync(cfg_file)) {
 if (program.browserName) {
     config = xtend(config, { browsers: [{ name: program.browserName, version: program.browserVersion, platform: program.browserPlatform }] });
 }
-
-// optional additional local config or from $HOME/.zuulrc
-var local_config = find_nearest_file('.zuulrc') || path.join(osenv.home(), '.zuulrc');
-if (fs.existsSync(local_config)) {
-    var zuulrc = yaml.parse(fs.readFileSync(local_config, 'utf-8'));
-    config = xtend(zuulrc, config);
-    config.tunnel_host = config.tunnel_host || zuulrc.tunnel_host;
-}
-
-var sauce_username = process.env.SAUCE_USERNAME;
-var sauce_key = process.env.SAUCE_ACCESS_KEY;
-
-config.username = sauce_username || config.sauce_username;
-config.key = sauce_key || config.sauce_key;
 
 if (!config.ui) {
     console.error('Error: `ui` must be configured in .zuul.yml or specified with the --ui flag');
@@ -155,15 +156,15 @@ else if (config.phantom) {
 
 if (!config.username || !config.key) {
     console.error('Error:');
-    console.error('Zuul tried to run tests in saucelabs, however no saucelabs credentials were provided.');
+    console.error('Zuul tried to run tests in '+config.selenium_runner+', however no '+config.selenium_runner+' credentials were provided.');
     console.error('See the zuul wiki (https://github.com/defunctzombie/zuul/wiki/Cloud-testing) for info on how to setup cloud testing.');
     process.exit(1);
     return;
 }
 
-scout_browser(function(err, all_browsers) {
+scout_browser(config, function(err, all_browsers) {
     if (err) {
-        console.error('Unable to get available browsers for saucelabs'.red);
+        console.error('Unable to get available browsers for '+config.selenium_runner+''.red);
         console.error(err.stack);
         return process.exit(1);
     }

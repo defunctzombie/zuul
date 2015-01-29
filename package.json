@@ -8,6 +8,7 @@
     "batch": "0.5.0",
     "bouncy": "3.2.2",
     "browserify": "6.3.3",
+    "browserstack-webdriver": "^2.41.1",
     "char-split": "0.2.0",
     "colors": "0.6.2",
     "commander": "2.1.0",
