@@ -32,6 +32,7 @@ program
 .option('--concurrency <n>', 'specify the number of concurrent browsers to test')
 .option('--no-coverage', 'disable code coverage analysis with istanbul')
 .option('--open', 'open a browser automatically. only used when --local is specified')
+.option('--html <html file>', 'HTML code to include in the tests viewer')
 .parse(process.argv);
 
 var config = {
@@ -46,7 +47,8 @@ var config = {
     server: program.server,
     concurrency: program.concurrency,
     coverage: program.coverage,
-    open: program.open
+    open: program.open,
+    html: program.html,
 };
 
 if(!process.stdout.isTTY){
