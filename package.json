@@ -29,7 +29,7 @@
     "shallow-copy": "0.0.1",
     "shell-quote": "1.4.1",
     "stack-mapper": "0.2.2",
-    "stacktrace-js": "defunctzombie/stacktrace.js#07e7b95",
+    "stacktrace-js": "git@github.com:defunctzombie/stacktrace.js.git#07e7b95",
     "superagent": "0.15.7",
     "superstack": "0.0.4",
     "tap-finished": "0.0.1",
