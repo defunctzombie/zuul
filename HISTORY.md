@@ -1,6 +1,7 @@
 # UNRELEASED
 
 * Builder API change #182
+* Specify full git url for stacktracejs #188
 
 # 2.1.1 (2015-03-09)
 
