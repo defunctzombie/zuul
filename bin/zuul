@@ -16,6 +16,7 @@ var Zuul = require('../lib/zuul');
 var scout_browser = require('../lib/scout_browser');
 var flatten_browser = require('../lib/flatten_browser');
 var zuul_reporter= require('zuul-reporter');
+var Soysauce= require('soysauce');
 
 program
 .version(require('../package.json').version)
@@ -322,8 +323,8 @@ scout_browser(function(err, all_browsers) {
                     console.log('zuul-reporter error:',err.message.red);
                 }
                 else{
-                    fs.writeFileSync(report,JSON.stringify(statuses));
-                    console.log('wrote job statuses to zuul.json'.green);
+                    var publishKey= new Soysauce().encrypt(statuses,process.env.TRAVIS);
+                    console.log(publishKey);
                 }
 
                 process.exit(code);
