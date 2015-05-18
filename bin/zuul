@@ -323,7 +323,7 @@ scout_browser(function(err, all_browsers) {
                     console.log('zuul-reporter error:',err.message.red);
                 }
                 else{
-                    var publishKey= new Soysauce().encrypt(statuses,process.env.TRAVIS);
+                    var publishKey= new Soysauce().encrypt(statuses,process.env.TRAVIS_JOB_ID);
                     console.log(publishKey);
                 }
 
