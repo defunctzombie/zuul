@@ -16,6 +16,9 @@ var Zuul = require('../lib/zuul');
 var scout_browser = require('../lib/scout_browser');
 var flatten_browser = require('../lib/flatten_browser');
 
+var zuul_reporter= require('zuul-reporter');
+var soysauce= require('soysauce');
+
 program
 .version(require('../package.json').version)
 .usage('[options] <files | dir>')
@@ -35,6 +38,7 @@ program
 .option('--concurrency <n>', 'specify the number of concurrent browsers to test')
 .option('--no-coverage', 'disable code coverage analysis with istanbul')
 .option('--open', 'open a browser automatically. only used when --local is specified')
+.option('--report', 'write job statuses to zuul.json')
 .parse(process.argv);
 
 var config = {
@@ -310,7 +314,27 @@ scout_browser(function(err, all_browsers) {
             console.log('all browsers passed'.green);
         }
 
-        process.exit((passed_tests_count > 0 && failed_tests_count == 0) ? 0 : 1);
+        var code= (passed_tests_count > 0 && failed_tests_count == 0) ? 0 : 1;
+        if(program.report){
+            zuul_reporter(zuul._browsers,function(err,statuses){
+                var report= path.join(process.cwd(),'zuul.json');
+
+                if(err){
+                    code= 1;
+                    console.log('zuul-reporter error:',err.message.red);
+                }
+                else{
+                    // Output SauceLabs browser matrix widget json
+                    //   See: https://github.com/59naga/soysauce
+                    console.log(soysauce.stringify(statuses,process.env.TRAVIS_JOB_ID));
+                }
+
+                process.exit(code);
+            });
+        }
+        else{
+            process.exit(code);
+        }
     });
 });
 
