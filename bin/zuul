@@ -316,9 +316,7 @@ scout_browser(function(err, all_browsers) {
 
         var code= (passed_tests_count > 0 && failed_tests_count == 0) ? 0 : 1;
         if(program.report){
-            zuul_reporter(zuul._browsers,function(err,statuses){
-                var report= path.join(process.cwd(),'zuul.json');
-
+            zuul_reporter(zuul._browsers,function(err,report){
                 if(err){
                     code= 1;
                     console.log('zuul-reporter error:',err.message.red);
@@ -326,7 +324,12 @@ scout_browser(function(err, all_browsers) {
                 else{
                     // Output SauceLabs browser matrix widget json
                     //   See: https://github.com/59naga/soysauce
-                    console.log(soysauce.stringify(statuses,process.env.TRAVIS_JOB_ID));
+                    if(process.env.TRAVIS_JOB_ID){
+                        console.log(soysauce.stringify(report,process.env.TRAVIS_JOB_ID));
+                    }
+                    else{
+                        console.log('skip',report.length,'report. cause TRAVIS_JOB_ID is null');
+                    }
                 }
 
                 process.exit(code);
