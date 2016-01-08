@@ -8,7 +8,9 @@ var yaml = require('yamljs');
 var xtend = require('xtend');
 var osenv = require('osenv');
 var find_nearest_file = require('find-nearest-file');
-var _ = require('lodash');
+var sortBy = require('lodash.sortBy');
+var pluck = require('lodash.pluck');
+var uniq = require('lodash.uniq');
 
 var Zuul = require('../lib/zuul');
 var scout_browser = require('../lib/scout_browser');
@@ -97,7 +99,7 @@ if (program.listAvailableBrowsers) {
 
         for (var browser in all_browsers) {
             console.log(browser);
-            var versions = _.uniq(_.pluck(all_browsers[browser], 'version')).sort(function(a, b) {
+            var versions = uniq(pluck(all_browsers[browser], 'version')).sort(function(a, b) {
                 var a_num = Number(a);
                 var b_num = Number(b);
 
@@ -113,7 +115,7 @@ if (program.listAvailableBrowsers) {
 
                 return -1;
             });
-            var platforms = _.sortBy(_.uniq(_.pluck(all_browsers[browser], 'platform')));
+            var platforms = sortBy(uniq(pluck(all_browsers[browser], 'platform')));
 
             console.log('   Versions: ' + versions.join(', '));
             console.log('   Platforms: ' + platforms.join(', '));
