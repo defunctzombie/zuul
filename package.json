@@ -39,7 +39,8 @@
     "wd": "0.3.11",
     "xtend": "2.1.2",
     "yamljs": "0.1.4",
-    "zuul-localtunnel": "1.1.0"
+    "zuul-localtunnel": "1.1.0",
+    "testingbot-api": "1.0.1"
   },
   "devDependencies": {
     "after": "~0.8.1",
