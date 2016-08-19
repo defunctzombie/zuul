@@ -1,3 +1,7 @@
+# 3.11.0 (2016-08-16)
+
+* add SAUCE_APPIUM_VERSION to specify appium version
+
 # 3.10.3 (2016-07-27)
 
 * more electron fixes
