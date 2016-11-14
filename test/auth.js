@@ -3,7 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var yaml = require('yamljs');
 
-// optinal additional config from $HOME/.zuulrc
+// optimal additional config from $HOME/.zuulrc
 var home_config = path.join(osenv.home(), '.zuulrc');
 var zuulrc = {};
 if (fs.existsSync(home_config)) {
