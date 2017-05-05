@@ -3,7 +3,9 @@ sudo: false
 
 language: node_js
 node_js:
-  - '0.10'
+  - '4'
+  - '6'
+  - '7'
 env:
   global:
     - secure: eSqeXCK69xSq+1tmzB2FQ20wu3+h/m0X0eS9UBm+HWEs2Vvfgbo/qLl5ULC8zW/WzpmftQnZur/vxUbz2og/oMZD/h8U6YC5MmB8H7QVci0tBbTQSFaIEmqbyzEyBtIhh+W708CNpr58SBZ/DBbU6izAIELm2QvGu3szZZJ2C/o=
