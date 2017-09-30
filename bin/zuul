@@ -27,6 +27,7 @@ program
 .option('--electron', 'run tests in electron. electron must be installed separately.')
 .option('--tunnel-host <host url>', 'specify a localtunnel server to use for forwarding')
 .option('--sauce-connect [tunnel-identifier]', 'use saucelabs with sauce connect instead of localtunnel. Optionally specify the tunnel-identifier')
+.option('--loopback <host name>', 'hostname to use instead of localhost, to accomodate Safari and Edge with Sauce Connect. Must resolve to 127.0.0.1')
 .option('--server <the server script>', 'specify a server script to be run')
 .option('--list-available-browsers', 'list available browsers and versions')
 .option('--browser-name <browser name>', 'specficy the browser name to test an individual browser')
@@ -52,6 +53,7 @@ var config = {
     prj_dir: process.cwd(),
     tunnel_host: program.tunnelHost,
     sauce_connect: program.sauceConnect,
+    loopback: program.loopback,
     server: program.server,
     concurrency: program.concurrency,
     coverage: program.coverage,
