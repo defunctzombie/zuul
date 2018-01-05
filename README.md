@@ -6,6 +6,12 @@ Zuul is different than other cross browser test runners in its simplicity and ab
 
 Don't just claim your js supports "all browsers", prove it with tests!
 
+If you are looking for the edge routing service named Zuul that is related to Netflix, it can be found here:
+https://github.com/Netflix/zuul
+
+If you are looking for the OpenStack related test automation tool that is also named Zuul, you can find it here:
+https://docs.openstack.org/infra/zuul/feature/zuulv3/
+
 ![zuul](https://f.cloud.github.com/assets/71256/1669799/fb463296-5c81-11e3-818a-26776dc7a256.jpg)
 
 ## Zuul workflow
