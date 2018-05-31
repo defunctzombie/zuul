@@ -1,3 +1,7 @@
+# 3.12.0 (2018-05-31)
+
+* Add --loopback version to solve travis/edge/safari localhost issues (#323)
+
 # 3.11.0 (2016-08-16)
 
 * add SAUCE_APPIUM_VERSION to specify appium version
