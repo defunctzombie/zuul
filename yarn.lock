@@ -634,8 +634,8 @@ bytes@3.0.0:
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
 
 cached-path-relative@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/cached-path-relative/-/cached-path-relative-1.0.1.tgz#d09c4b52800aa4c078e2dd81a869aac90d2e54e7"
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cached-path-relative/-/cached-path-relative-1.0.2.tgz#a13df4196d26776220cc3356eb147a52dba2c6db"
 
 camelcase@^1.0.2:
   version "1.2.1"
@@ -796,7 +796,7 @@ compressible@~2.0.3:
 
 compression@1.5.0:
   version "1.5.0"
-  resolved "http://registry.npmjs.org/compression/-/compression-1.5.0.tgz#ccc1a54788da1b3ad7729c49f6a00b3ac9adf47f"
+  resolved "https://registry.npmjs.org/compression/-/compression-1.5.0.tgz#ccc1a54788da1b3ad7729c49f6a00b3ac9adf47f"
   dependencies:
     accepts "~1.2.9"
     bytes "2.1.0"
