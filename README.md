@@ -1,3 +1,5 @@
+** /!\ This software is not maintained and was not updated for several years, if you want to do browser testing we recommend you use different tools. Which ones? I have no idea but if you do, please open a PR so we can list them here /!\ **
+
 # zuul [![Build Status](https://travis-ci.org/defunctzombie/zuul.svg)](https://travis-ci.org/defunctzombie/zuul)
 
 Zuul is an easy way to test your javascript in browsers. Start testing your code in seconds locally and move to cloud based browsers seamlessly for better coverage.
