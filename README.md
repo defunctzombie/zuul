@@ -32,6 +32,26 @@ When iterating on your tests during development, simply use zuul `--local` mode 
 
 See the [quickstart](https://github.com/defunctzombie/zuul/wiki/quickstart) page on the wiki for more details.
 
+### Automated browser tests
+
+You can test in PhantomJS using:
+
+    zuul --phantom
+
+Note that PhantomJS must be installed separately, e.g. `npm install phantomjs`.
+
+You can also test using Selenium against any browser you have installed locally. For instance:
+
+    zuul --selenium
+
+will test in the default browser (Firefox). To test in another browser, you can do:
+
+    zuul --selenium --browser-name chrome
+
+Or:
+
+    zuul --selenium --browser-name firefox --browser-version 41.0.1
+
 ### Cross browser testing via Saucelabs
 
 The reason we go through all this trouble in the first place is to seamlessly run our tests against all those browsers we don't have installed. Luckily, [saucelabs](https://saucelabs.com/) runs some browsers and we can easily task zuul to test on those.

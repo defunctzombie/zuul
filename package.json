@@ -28,6 +28,7 @@
     "lodash": "3.10.1",
     "opener": "1.4.0",
     "osenv": "0.0.3",
+    "selenium-standalone": "^5.0.0",
     "shallow-copy": "0.0.1",
     "shell-quote": "1.4.1",
     "stack-mapper": "0.2.2",
@@ -36,7 +37,7 @@
     "tap-finished": "0.0.1",
     "tap-parser": "0.7.0",
     "watchify": "3.7.0",
-    "wd": "0.3.11",
+    "wd": "0.4.0",
     "xtend": "2.1.2",
     "yamljs": "0.2.8",
     "zuul-localtunnel": "1.1.0"
