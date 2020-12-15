@@ -33,7 +33,7 @@
     "stack-mapper": "0.2.2",
     "stacktrace-js": "1.3.1",
     "superagent": "0.15.7",
-    "tap-finished": "0.0.1",
+    "tap-finished": "https://github.com/vvo/tap-finished/tarball/patch-1",
     "tap-parser": "0.7.0",
     "watchify": "3.7.0",
     "wd": "0.3.11",
